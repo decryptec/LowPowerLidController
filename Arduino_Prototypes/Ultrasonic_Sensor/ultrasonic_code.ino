@@ -1,4 +1,5 @@
 #include <Servo.h>
+#include "ArduinoLowPower.h"
 
 // Pin assignments
 #define servoPin 8
@@ -38,4 +39,8 @@ void loop() {
     myservo.write(closedPos); // Close the lid
     delay(500); // Wait before next iteration
   }
+
+  // Triggers a 2000 ms sleep (the device will be woken up only by the registered wakeup sources and by internal RTC)
+  // The power consumption of the chip will drop consistently
+  LowPower.sleep(2000);
 }
