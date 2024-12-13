@@ -15,7 +15,7 @@
 - **Stabilization Time**: PIR sensor needs **30 seconds** after power-up to stabilize.
 - **Signal Behavior**: When motion is detected, output voltage fluctuates between **2.2V to 4.4V** (measured with a multimeter).
 - **LED Process**: The LED runs for **3 seconds** after motion detection. The voltage spikes are negligible, as the LED duration outlasts them, preventing repeat activations.
-- **Lower Resistance (5kΩ)**: Caused **more motion detection spikes** and **frequent false reads** due to increased sensitivity to small fluctuations and noise.
+- **Lower Resistance (1kΩ to 5kΩ)**: Caused **more motion detection spikes** and **frequent false reads** due to increased sensitivity to small fluctuations and noise.
 - **Higher Resistance (10kΩ to 20kΩ)**: Reduced **motion detection spikes** and **improved stability**, leading to fewer false readings.
 
 ## Conclusion
