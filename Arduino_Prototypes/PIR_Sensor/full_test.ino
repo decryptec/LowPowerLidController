@@ -1,28 +1,31 @@
-#include <Servo.h.>
+#include <Servo.h>
 #include "ArduinoLowPower.h"
 
-//Pin assignments
+// Pin assignments
 #define PIR 2 // PIR interrupt
 #define servoPin 8
 
-
-//Global objects/vars
+// Global objects/vars
 Servo myservo;
 const int closedPos = 90;
 const int openPos = 180;
+unsigned long startTime;
+#define STABILIZATION_TIME 30000 // 30 seconds
+volatile bool motionDetected = false;
 
 void setup() {
   Serial.begin(9600);
   Serial.println("Initializing Setup...");
-  //PIR setup
+  
+  // PIR setup
   pinMode(PIR, INPUT);
   attachInterrupt(digitalPinToInterrupt(PIR), OpenLid, RISING);
-  startTime = millis ();
+  startTime = millis();
 
-  //Servo setup
+  // Servo setup
   myservo.attach(servoPin);
   myservo.write(closedPos); // Start with the lid closed
-    
+  
   Serial.println("Setup Complete. Stabilizing PIR...");
 }
 
@@ -34,12 +37,14 @@ void loop() {
         }
         return;
     }
-}
 
-void OpenLid(){
-            Serial.println("Motion Detected");
-            myservo.write(openPos); // Open the lid
-            delay(500); // Wait for 500 ms to ensure servo moves
-            myservo.write(closedPos); // Close the lid
-            delay(500); // Wait before next iteration
+    // Check if motion was detected
+    if (motionDetected) {
+        Serial.println("Motion Detected");
+        myservo.write(openPos); // Open the lid
+        delay(500); // Wait for servo movement
+        myservo.write(closedPos); // Close the lid
+        delay(500); // Wait before next operation
+        motionDetected = false; // Reset flag
+    }
 }
