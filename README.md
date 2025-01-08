@@ -1,4 +1,4 @@
-# Smart Trash Lid Controller
+# Low Power Trash Lid
 
 Development of a low-power, autonomous trashcan lid controller. Arduino Uno Rev 3 for rapid prototyping and refined using an ATtiny84 microcontroller, custom PCB, and a lithium-ion battery for long-term operation.
 
