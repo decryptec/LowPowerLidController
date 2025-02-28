@@ -1,0 +1,33 @@
+#define F_CPU 16000000UL  // 16 MHz clock speed
+#include <avr/io.h>
+#include <util/delay.h>
+
+void timer1_init() {
+    DDRB |= (1 << PB1);  // Set PB1 (OC1A) as output
+
+    TCCR1A = (1 << COM1A1) | (1 << WGM11);  // Fast PWM mode 14
+    TCCR1B = (1 << WGM13) | (1 << WGM12) | (1 << CS11); // Prescaler 8
+
+    ICR1 = 40000; // 20ms period (50Hz)
+    OCR1A = 1500;  // Start at 90° (1.5ms pulse)
+}
+
+// Move servo from 0° to 90° only
+void set_servo_angle(uint8_t angle) {
+    if (angle > 90) angle = 90;  // Restrict to max 90°
+
+    // Map 0° (0.5ms → 1000 OCR1A) to 90° (1.5ms → 3000 OCR1A)
+    OCR1A = 1000 + ((uint32_t)angle * 2000) / 90;
+}
+
+int main() {
+    timer1_init();
+    
+    while (1) {
+        set_servo_angle(0);   // Move to 0°
+        _delay_ms(1000);
+
+        set_servo_angle(90);  // Move to 90°
+        _delay_ms(1000);
+    }
+}
