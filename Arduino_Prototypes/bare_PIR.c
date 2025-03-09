@@ -55,7 +55,7 @@ int main(void) {
 void init_io(void) {
     DDRB |= (1 << LED_PIN);  // Set LED pin as output
     DDRD &= ~(1 << PIR_PIN); // Set PIR pin as input
-    PORTD |= (1 << PIR_PIN); // Enable pull-up resistor on PIR pin
+    PORTD &= ~(1 << PIR_PIN);  // Enable pull-down resistor on PIR pin
 }
 
 void init_timer(void) {
